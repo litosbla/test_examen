@@ -1,6 +1,6 @@
 import json
 def error(msg):
-    print("!!!!!! Error: ",msg)
+    print("\r!!!!!! Error: ",msg.upper())
     input("\t Digite cualquier tecla para continuar")
 
 def leer_nombre(msg):
@@ -84,10 +84,10 @@ def services():
     lista=[]
     while True:
         try:
-            servicio=input("Digite un servicio: ")
+            servicio=input("\tDigite un servicio: ")
             if servicio.isalpha() and servicio not in lista:
                 lista.append(servicio)
-                if validar_otro_ciclo("Desea ingresar otro servicio ? (si|no) "):
+                if validar_otro_ciclo("\t@Desea ingresar otro servicio ? (si|no) "):
                     continue
                 return lista
             error("valor invalido o repetido")
@@ -100,16 +100,16 @@ def ingresar_datos():
     
     while True:  
         nom=len(mascotas["pets"])+1
-        print(" "*15,f"\nDigite para la mascota {nom}\n"," "*15)
+        print(" "*15,f"\n\tDigite para la mascota #{nom}\n"," "*15)
 
-        tipo=leer_nombre(f"Digite el tipo: ")
+        tipo=leer_nombre(f"\tDigite el tipo: ")
         # if True in [True for x in range(len(mascotas)) if mascotas[x]["codigo"]==documento]:
         #     error("Codigo repetido")
         #     continue
         
-        raza=leer_nombre(f"Digite la raza: ")
-        talla=leer_talla(f"Digite la talla: ")
-        precio=leer_documento(f"Digite el precio: ")
+        raza=leer_nombre(f"\tDigite la raza: ")
+        talla=leer_talla(f"\tDigite la talla: ")
+        precio=leer_documento(f"\tDigite el precio: ")
         servicios=services()
         #definitiva= (nota1+nota2+nota3)/3
         datos={
@@ -121,28 +121,34 @@ def ingresar_datos():
                 
             }
         mascotas["pets"].append(datos)
-        print(mascotas)
+        
 
         
         
-        if validar_otro_ciclo("¿Quiere seguir agregando mascotas? (si|no) "):
+        if validar_otro_ciclo("\t@¿Quiere seguir agregando mascotas? (si|no) "):
             continue
         subir_json(mascotas)
 
         break
+def validar_entero_string(key,value):
+    if type(value) is int:
+        print(f"\t{key} --->${value:,.0f}")
+    
+    else:
+        print(f"\t{key} --->{value}")
 def mostrar(dic_persona,i):
     print(" "*15,f"\n  Mascota {i+1} \n"," "*15)
-    [[print(f"servicio {i+1} ---> {value[i]}") for i in range(len(value))] if type(value) is list else print(f"{key} --->{value}") for key,value in dic_persona.items()]
+    [[print(f"\tservicio {i+1} ---> {value[i]}") for i in range(len(value))] if type(value) is list else validar_entero_string(key,value) for key,value in dic_persona.items()]
     #[ ( [print(f"nota {i+1} ---> {value[i]}") for i in range(len(value))] if type(value) is list else print(key," ---> ",value)) for key,value in dic_persona.items() ]
 
 def buscar_tipo():
     mascotas=leer_json()
     print(" "*15,f"\n Mostrar por tipo \n"," "*15)
     while True:
-        codigo = leer_nombre("Digite el tipo de mascota que quiere buscar: ")
+        codigo = leer_nombre("\tDigite el tipo de mascota que quiere buscar: ")
         if True in [True for x in range(len(mascotas["pets"])) if mascotas["pets"][x]["tipo"]==codigo]:
             [mostrar(mascotas["pets"][i],i) for i in range(len(mascotas["pets"])) if mascotas["pets"][i]["tipo"]==codigo]
-            if validar_otro_ciclo("¿Desea buscar otro tipo? (si|no)"):
+            if validar_otro_ciclo("\t¿Desea buscar otro tipo? (si|no)"):
                 continue
             break
         error("Codigo repetido")
@@ -158,10 +164,10 @@ def leer_talla(msg):
         continue
 def Actualizar():
 
-    tipo=leer_nombre(f"Digite el tipo: ")
-    raza=leer_nombre(f"Digite la raza: ")
-    talla=leer_talla(f"Digite la talla: ")
-    precio=leer_documento(f"Digite el precio: ")
+    tipo=leer_nombre(f"\tDigite el tipo: ")
+    raza=leer_nombre(f"\tDigite la raza: ")
+    talla=leer_talla(f"\tDigite la talla: ")
+    precio=leer_documento(f"\tDigite el precio: ")
     servicios=services()
 
     datos={
@@ -188,7 +194,7 @@ def modificar_datos():
         mascotas["pets"][codigo]=datos_agregar
         
         
-        if validar_otro_ciclo("Desea modificar otra mascota? (si|no) "):
+        if validar_otro_ciclo("\t@Desea modificar otra mascota? (si|no) "):
             continue
         subir_json(mascotas)
         break
@@ -197,18 +203,18 @@ def borrar_datos():
     mascotas=leer_json()
     while True:
         mostrar_todos()
-        codigo=leer_id("Digite el numero de la mascota que quiere borrar ")-1
+        codigo=leer_id("\tDigite el numero de la mascota que quiere borrar ")-1
         if codigo < 0 or codigo >len(mascotas["pets"]):
             error("Mascota inexistente")
             continue
 
         #datos_agregar=Actualizar()
-        print(mascotas)
+        
         mascotas["pets"].pop(codigo)
         print("se ha borrado")
-        print(mascotas)
         
-        if validar_otro_ciclo("Desea eliminar otra mascota? (si|no)"):
+        
+        if validar_otro_ciclo("\t@Desea eliminar otra mascota? (si|no)"):
             continue
         subir_json(mascotas)
         break
@@ -217,7 +223,7 @@ def borrar_datos():
 def mostrar_todos():
     mascotas=leer_json()
     [mostrar(mascotas["pets"][i],i) for i in range(len(mascotas["pets"]))]
-
+    
 # def borrar_datos_2(personas):
 #     while True:
 #         codigo=leer_id("Digite el codigo del estudiante que quiere borrar ")
